@@ -24,7 +24,10 @@ initModels()
 app.use(express.json())
 
 app.get('/', (req,res)=>{
-    res.status(200).json({message: 'ok'})
+    res.status(200).json({
+        pag_Menu:"http://127.0.0.1:7000/products",
+        message: 'ok'
+    })
 })
 
 app.use('/products', productsRouter)
