@@ -1,3 +1,4 @@
+const { response } = require("express");
 const productsController = require("./products.controller")
 
 const getAllProducts = (req, res) =>{
@@ -40,8 +41,48 @@ const getProductsByid = (req, res)=>{
             res.status(404).json({message: err.message})
         })
 }
-module.exports ={
+
+const patchProducts = (req, res) => {
+    const id = req.params.id 
+    const {name, category, price, isAvailable} = req.body;
+  
+    productsController.editProducts(id, {name, category, price, isAvailable})
+      .then((response) => {
+        //? [0]
+        if(response[0]){
+          res.status(200).json({
+            message: `Product with id: ${id}, edited succesfully!`
+          })
+        } else {
+          res.status(400).json({message: 'Invalid ID'})
+        }
+      })
+      .catch(error => {
+        res.status(400).json({message: error.message})
+      })
+  }
+  
+ const deleteProducts = (req, res) => {
+    const id = req.params.id
+    productsController.deleteProducts(id)
+        .then((response)=>{
+            if(response){
+                res.status(204).json()
+            }else{
+                res.status(400).json({message: 'Invalid ID'})
+            }
+        })
+        .catch(err=>{
+            res.status(400).json(err)
+
+        })
+    }
+
+ 
+module.exports = {
     getAllProducts,
     getProductsByid,
-    postProducts
+    postProducts, 
+    patchProducts,
+    deleteProducts
 }

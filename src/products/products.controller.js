@@ -1,4 +1,4 @@
-const { response } = require("express");
+
 const uuid = require("uuid");
 
 const Products = require("../models/products.models");
@@ -33,7 +33,8 @@ const createProducts = async (data)=>{
 const getProductsByid = async (id) => {
     const data = await Products.findOne({
         where : {
-            id,
+            id: id,
+            name: 'Poco'
         },
     });
     return data
@@ -42,18 +43,37 @@ const getProductsByid = async (id) => {
     //     .then((response)=>console.log(response))
     //     .catch((err)=>console.log(err))
 
-    const updateProducts = async (id,data)=>{
+    const editProducts = async (id,data)=>{
         const response = await Products.update(data, {
             where :{
-                id: id,
-                category: 'Electronic'
+                id
             },
         });
         return response
     }
 
+    // editProducts("936cc1e8-9536-4f2d-a46b-2667ff77dd47",{
+    //    price: 300
+    // })
+    //     .then((response)=>{
+    //         console.log(response);
+    //      })
+    //      .catch((err)=>{
+    //         console.log(err)
+    //      });
+
+    const deleteProducts = async (id) =>{
+        const data = await Products.destroy({
+            where:{
+                id: id
+            }
+        })
+        return data
+    }
     module.exports = {
         getAllProducts,
         getProductsByid,
-        createProducts
+        createProducts,
+        editProducts,
+        deleteProducts
     }
