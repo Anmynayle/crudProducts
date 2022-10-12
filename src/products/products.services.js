@@ -1,11 +1,16 @@
 const { response } = require("express");
 const productsController = require("./products.controller")
 
-const getAllProducts = (req, res) =>{
+const getAllProducts = async(req, res) =>{
+    const count = await productsController.countTotalProducts()
     productsController
     .getAllProducts()
     .then((data)=>{
-        res.status(200).json(data)
+        res.status(200).json({
+            prev_Page:"http://127.0.0.1:7000/",
+            count: count,
+            result: data
+        })
     })
     .catch((err)=>{
         res.status(400).json({message: err.message});
@@ -32,7 +37,10 @@ const getProductsByid = (req, res)=>{
     productsController.getProductsByid(id)
         .then(data=>{
             if(data){
-                res.status(200).json(data)
+                res.status(200).json({
+                    prev_Page: "http://127.0.0.1:7000/products/",
+                    data
+                })
             }else{
                 res.status(400).json({message:'Invalid ID'})
             }

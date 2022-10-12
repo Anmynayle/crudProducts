@@ -23,6 +23,11 @@ const Products = db.define('products',{
     isAvailable:{
         type: DataTypes.BOOLEAN,
         defaultValue: true
+    },
+    urlProduct:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        field: "url_Product"
     }
 })
 
